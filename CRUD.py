@@ -31,8 +31,8 @@ estoque = validar_estoque_inicial(estoque_inicial)
           # buscar_produtos(user)
 #       case 5: remover_produtos()
 #       case 6: ordenar_estoque()
-#       case 7:
-#       case 8:
+#       case 7: exibir_esgotados()
+#       case 8: listar_estoque_baixo()
 #       case 9:
 #       case 10:
       
@@ -90,7 +90,7 @@ def listar_produtos():
     return
   
   print(f"{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de Venda'.ljust(15)}")
-  print("-" * 77)
+  print("-" * 90)
   
   for i in estoque:
     print(f"{i['descricao'].ljust(30)}{str(i['codigo']).ljust(10)}{str(i['quantidade_estoque']).ljust(12)}{str(i['custo']).ljust(10)}{str(i['preco_venda']).ljust(15)}")
@@ -152,4 +152,47 @@ def remover_produtos():
       print(f'Nenhum produto encontrado com o código {user}. Tente novamente.')
       
 def exibir_esgostados():
+  lista = [produto for produto in estoque if produto['quantidade_estoque'] == 0]
+  if not lista:
+    print('\nNão há nenhum produto com esses parâmetros')
+  else:
+    print(f'{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de venda'.ljust(15)}')
+    print('-'*90)
+    for i in lista:
+      print(f"{i['descricao'].ljust(30)}{str(i['codigo']).ljust(10)}{str(i['quantidade_estoque']).ljust(12)}{str(i['custo']).ljust(10)}{str(i['preco_venda']).ljust(15)}")
   
+def listar_estoque_baixo():
+  while True:
+    user = input('\nInforme o valor mínimo de estoque (caso deixar em branco, o padrão será 5):')
+    
+    if user.isdigit():
+      user = int(user)
+      break
+    elif user == '':
+      user = 5
+      break
+    else:
+      print('Valor inválido. Tente novamente!')
+      
+  lista = [produto for produto in estoque if produto['quantidade_estoque'] <= user]
+  
+  if not lista:
+    print('\nNão há nenhum produto com esses parâmetros')
+  else:
+    print(f'{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de venda'.ljust(15)}')
+    print('-'*90)
+    for i in lista:
+      print(f"{i['descricao'].ljust(30)}{str(i['codigo']).ljust(10)}{str(i['quantidade_estoque']).ljust(12)}{str(i['custo']).ljust(10)}{str(i['preco_venda']).ljust(15)}")
+    
+
+def atualizar_estoque():
+  while True:
+    user = input('Informe o código do produto a ser atualizado: ')
+    try: 
+      user = int(user)
+      print(user)
+    except ValueError:
+      print('Erro')
+    # if user.isdigit():
+    #   user = int(user)
+atualizar_estoque()

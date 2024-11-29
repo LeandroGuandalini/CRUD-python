@@ -7,6 +7,8 @@ def exibir_menu():
   print('[4] - Buscar produtos ')
   print('[5] - Remover produtos ')
   print('[6] - Ordenar produtos ')
+  print('[7] - Exibir produtos esgotados ')
+  print('[8] - Listar produtos com estoque baixo ')
 
 def entrar_opcao():
   while True:
