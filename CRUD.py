@@ -132,14 +132,14 @@ def exibir_esgotados():
   Exibe produtos que possuem quantidade em estoque igual a zero.
   Lista os produtos esgotados ou uma mensagem indicando que não há produtos com essa característica.
   """
-  lista = [produto for produto in estoque if produto['quantidade_estoque'] == 0]
-  if not lista:
+  esgotados = list(filter(lambda x: x['quantidade_estoque'] == 0, estoque))
+  if not esgotados:
     print('\nNão há nenhum produto com esses parâmetros')
   else:
-    print(f'{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de venda'.ljust(15)}')
-    print('-'*90)
-    for i in lista:
-      print(f"{i['descricao'].ljust(30)}{str(i['codigo']).ljust(10)}{str(i['quantidade_estoque']).ljust(12)}{str(i['custo']).ljust(10)}{str(i['preco_venda']).ljust(15)}")
+    print(f"{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de venda'.ljust(15)}")
+    print('-' * 90)
+    for produto in esgotados:
+      print(f"{produto['descricao'].ljust(30)}{str(produto['codigo']).ljust(10)}{str(produto['quantidade_estoque']).ljust(12)}{str(produto['custo']).ljust(10)}{str(produto['preco_venda']).ljust(15)}")
   
 def listar_estoque_baixo():
   """
@@ -157,16 +157,15 @@ def listar_estoque_baixo():
       break
     else:
       print('Valor inválido. Tente novamente!')
-      
-  lista = [produto for produto in estoque if produto['quantidade_estoque'] <= user]
+  estoque_baixo = list(filter(lambda x: x['quantidade_estoque'] <= user, estoque))
   
-  if not lista:
+  if not estoque_baixo:
     print('\nNão há nenhum produto com esses parâmetros')
   else:
-    print(f'{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de venda'.ljust(15)}')
-    print('-'*90)
-    for i in lista:
-      print(f"{i['descricao'].ljust(30)}{str(i['codigo']).ljust(10)}{str(i['quantidade_estoque']).ljust(12)}{str(i['custo']).ljust(10)}{str(i['preco_venda']).ljust(15)}")
+    print(f"{'Descrição'.ljust(30)}{'Código'.ljust(10)}{'Quantidade'.ljust(12)}{'Custo'.ljust(10)}{'Preço de venda'.ljust(15)}")
+    print('-' * 90)
+    for produto in estoque_baixo:
+      print(f"{produto['descricao'].ljust(30)}{str(produto['codigo']).ljust(10)}{str(produto['quantidade_estoque']).ljust(12)}{str(produto['custo']).ljust(10)}{str(produto['preco_venda']).ljust(15)}")
 
 def atualizar_estoque():
   """
@@ -254,10 +253,9 @@ def calcular_valor_estoque():
   
   Exibe o valor total do estoque no final.
   """
-  total = 0
-  for produto in estoque:
-    total += produto['quantidade_estoque'] * produto['preco_venda']
-  print (f'O valor total do estoque é de R${total}')
+  valores_totais = map(lambda x: x['quantidade_estoque'] * x['preco_venda'], estoque)
+  total = sum(valores_totais)
+  print(f'O valor total do estoque é de R${total:.2f}')
   
 def calcular_lucro():
   """
@@ -269,10 +267,9 @@ def calcular_lucro():
   
   Exibe o lucro total do estoque no final.
   """
-  total = 0
-  for produto in estoque:
-    total += (produto['quantidade_estoque'] * produto['preco_venda']) - (produto['quantidade_estoque'] * produto['custo'])
-  print (f'O lucro total do estoque é de R${total}')
+  lucros = map(lambda x: (x['preco_venda'] - x['custo']) * x['quantidade_estoque'], estoque)
+  total = sum(lucros)
+  print(f'O lucro total do estoque é de R${total:.2f}')
   
 def gerar_relatorio():
   """
